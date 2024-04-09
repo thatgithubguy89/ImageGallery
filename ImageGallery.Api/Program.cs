@@ -1,7 +1,9 @@
 using ImageGallery.Api.Data;
+using ImageGallery.Api.Extensions;
 using ImageGallery.Api.Models.Identity;
 using ImageGallery.Api.Profiles;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ImageGalleryDbContext>(options => options.UseSqlServer(builder.Configuration["ImageGalleryConnectionString"]));
 builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<ImageGalleryDbContext>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 
