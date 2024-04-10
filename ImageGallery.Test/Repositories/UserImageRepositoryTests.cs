@@ -18,6 +18,14 @@ namespace ImageGallery.Test.Repositories
         IMapper _mapper;
         MapperConfiguration _mapperConfiguration;
 
+        static readonly List<Comment> mockComments = new List<Comment>
+        {
+            new Comment { Id = 1, UserImageId = 1, CreateTime = new DateTime(2023, 1, 1) },
+            new Comment { Id = 2, UserImageId = 1, CreateTime = new DateTime(2024, 1, 1) }
+        };
+
+        static readonly UserImageDto mockUserImage = new UserImageDto { Id = 1 };
+
         static readonly List<UserImage> mockUserImages = new List<UserImage>
         {
             new UserImage { Id = 1 },
@@ -58,6 +66,26 @@ namespace ImageGallery.Test.Repositories
 
             result.ShouldBeOfType<List<UserImageDto>>();
             result.Count.ShouldBe(mockUserImages.Count);
+        }
+
+        [Test]
+        public async Task GetByIdAsync()
+        {
+            await _context.Comments.AddRangeAsync(mockComments);
+            await _userImageRepository.AddAsync(mockUserImage);
+
+            var result = await _userImageRepository.GetByIdAsync(mockUserImage.Id);
+
+            result.ShouldBeOfType<UserImageDto>();
+            result.Id.ShouldBe(mockUserImage.Id);
+            result.Comments.Count.ShouldBe(mockComments.Count);
+        }
+
+        [TestCase(0)]
+        [TestCase(-1)]
+        public async Task GetByIdAsync_GivenInvalidId_ShouldThrow_ArgumentOutOfRangeException(int id)
+        {
+            await Should.ThrowAsync<ArgumentOutOfRangeException>(async () => await _userImageRepository.GetByIdAsync(id));
         }
     }
 }

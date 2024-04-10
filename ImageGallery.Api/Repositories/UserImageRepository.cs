@@ -23,5 +23,15 @@ namespace ImageGallery.Api.Repositories
 
             return Convert(userImages);
         }
+
+        public override async Task<UserImageDto> GetByIdAsync(int id)
+        {
+            ArgumentOutOfRangeException.ThrowIfLessThanOrEqual(id, 0);
+
+            var userImage = await _context.UserImages.Include(i => i.Comments!.OrderByDescending(c => c.CreateTime))
+                                                     .FirstOrDefaultAsync(i => i.Id == id);
+
+            return Convert(userImage!);
+        }
     }
 }
