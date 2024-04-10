@@ -6,6 +6,6 @@ namespace ImageGallery.Api.Models
     {
         public string Content { get; set; } = string.Empty;
         public int UserImageId { get; set; }
-        public UserImage UserImage { get; set; } = null!;
+        public UserImage? UserImage { get; set; }
     }
 }

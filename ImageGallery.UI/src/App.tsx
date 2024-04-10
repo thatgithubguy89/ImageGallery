@@ -3,6 +3,7 @@ import "./App.css";
 import { HomePage } from "./pages/HomePage";
 import { NavBar } from "./components/navigation/NavBar";
 import { UserImagePage } from "./pages/UserImageDetailsPage";
+import { CreateCommentPage } from "./pages/CreateCommentPage";
 
 function App() {
   return (
@@ -12,6 +13,10 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/userimage/:id" element={<UserImagePage />} />
+          <Route
+            path="/createcomment/:userimageid"
+            element={<CreateCommentPage />}
+          />
         </Routes>
       </BrowserRouter>
     </>

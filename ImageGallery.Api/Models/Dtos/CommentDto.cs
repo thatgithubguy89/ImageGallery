@@ -6,6 +6,6 @@ namespace ImageGallery.Api.Models.Dtos
     {
         public string Content { get; set; } = string.Empty;
         public int UserImageId { get; set; }
-        public UserImageDto UserImage { get; set; } = null!;
+        public UserImageDto? UserImage { get; set; }
     }
 }
