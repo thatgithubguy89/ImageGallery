@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ImageGalleryDbContext>(options => options.UseSqlSe
 builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<ImageGalleryDbContext>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddCors(options => options.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddRepositories();
 
 var app = builder.Build();
@@ -27,5 +28,6 @@ if (app.Environment.IsDevelopment())
 app.MapIdentityApi<AppUser>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseCors();
 app.MapControllers();
 app.Run();
