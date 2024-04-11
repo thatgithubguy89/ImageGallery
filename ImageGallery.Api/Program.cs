@@ -16,6 +16,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddCors(options => options.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddRepositories();
+builder.Services.AddServices();
 
 var app = builder.Build();
 
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
 app.MapIdentityApi<AppUser>();
 app.UseHttpsRedirection();
 app.UseAuthorization();

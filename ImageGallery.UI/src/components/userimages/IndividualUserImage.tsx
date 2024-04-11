@@ -21,7 +21,7 @@ export const IndividualUserImage = ({ userImage }: Props) => {
           onClick={handleNavigate}
         >
           <img
-            src="https://bootstrapious.com/i/snippets/sn-gallery/img-1.jpg"
+            src={`${import.meta.env.VITE_BASE_URL}${userImage.imagePath}`}
             alt=""
             className="img-fluid card-img-top"
           />

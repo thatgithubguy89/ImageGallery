@@ -4,6 +4,7 @@ import { HomePage } from "./pages/HomePage";
 import { NavBar } from "./components/navigation/NavBar";
 import { UserImagePage } from "./pages/UserImageDetailsPage";
 import { CreateCommentPage } from "./pages/CreateCommentPage";
+import { CreateUserImagePage } from "./pages/CreateUserImagePage";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             path="/createcomment/:userimageid"
             element={<CreateCommentPage />}
           />
+          <Route path="/createuserimage" element={<CreateUserImagePage />} />
         </Routes>
       </BrowserRouter>
     </>

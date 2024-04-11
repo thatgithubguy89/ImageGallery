@@ -1,5 +1,7 @@
 ﻿using ImageGallery.Api.Interfaces.Repositories;
+using ImageGallery.Api.Interfaces.Services;
 using ImageGallery.Api.Models.Dtos;
+using ImageGallery.Api.Models.Requests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageGallery.Api.Controllers
@@ -8,13 +10,41 @@ namespace ImageGallery.Api.Controllers
     [ApiController]
     public class UserImagesController : ControllerBase
     {
+        private readonly IFileService _fileService;
         private readonly ILogger<UserImagesController> _logger;
         private readonly IUserImageRepository _userImageRepository;
 
-        public UserImagesController(ILogger<UserImagesController> logger, IUserImageRepository userImageRepository)
+        public UserImagesController(IFileService fileService, ILogger<UserImagesController> logger, IUserImageRepository userImageRepository)
         {
+            _fileService = fileService;
             _logger = logger;
             _userImageRepository = userImageRepository;
+        }
+
+        [HttpPost("createuserimage")]
+        [ProducesResponseType(typeof(UserImageDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> CreateUserImage([FromForm] AddUserImageRequest request)
+        {
+            try
+            {
+                _logger.LogInformation("Creating user image");
+
+                if (request == null)
+                    return BadRequest();
+
+                request.UserImageDto.ImagePath = await _fileService.UploadFileAsync("images", request.File);
+                var userimage = await _userImageRepository.AddAsync(request.UserImageDto);
+
+                return CreatedAtAction(nameof(GetSingleUserImage), new { id = userimage.Id }, userimage);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to create user image: {}", ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpGet("getalluserimages")]
