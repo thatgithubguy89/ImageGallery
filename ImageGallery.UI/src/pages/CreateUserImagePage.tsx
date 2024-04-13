@@ -23,30 +23,32 @@ export const CreateUserImagePage = () => {
     };
 
     createUserImage(data)
-      .then(() => navigate("/"))
+      .then(() => navigate("/profile"))
       .catch((error) => console.log(error));
   };
 
   return (
     <>
-      <form onSubmit={handleCreateUserImage}>
+      <form className="container w-25" onSubmit={handleCreateUserImage}>
         <div>
           <input
             type="text"
-            className="form-control"
+            className="form-control mb-3"
             placeholder="Title"
             onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div>
           <input
-            className="form-control"
+            className="form-control mb-3"
             type="file"
             onChange={handleFileChange}
           />
         </div>
         <div>
-          <button type="submit">Create Image</button>
+          <button className="btn btn-primary" type="submit">
+            Create Image
+          </button>
         </div>
       </form>
     </>

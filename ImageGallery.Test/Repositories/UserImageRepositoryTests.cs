@@ -21,15 +21,15 @@ namespace ImageGallery.Test.Repositories
         static readonly List<Comment> mockComments = new List<Comment>
         {
             new Comment { Id = 1, UserImageId = 1, CreateTime = new DateTime(2023, 1, 1) },
-            new Comment { Id = 2, UserImageId = 1, CreateTime = new DateTime(2024, 1, 1) }
+            new Comment { Id = 2, UserImageId = 1, CreateTime = new DateTime(2024, 1, 1) },
         };
 
         static readonly UserImageDto mockUserImage = new UserImageDto { Id = 1 };
 
         static readonly List<UserImage> mockUserImages = new List<UserImage>
         {
-            new UserImage { Id = 1 },
-            new UserImage { Id = 2 }
+            new UserImage { Id = 1, },
+            new UserImage { Id = 2, }
         };
 
         [SetUp]
@@ -86,6 +86,27 @@ namespace ImageGallery.Test.Repositories
         public async Task GetByIdAsync_GivenInvalidId_ShouldThrow_ArgumentOutOfRangeException(int id)
         {
             await Should.ThrowAsync<ArgumentOutOfRangeException>(async () => await _userImageRepository.GetByIdAsync(id));
+        }
+
+        [Test]
+        public async Task GetUserImagesByUsernameAsync()
+        {
+            var username = "test@email.com";
+            await _context.UserImages.AddRangeAsync(mockUserImages);
+            await _context.SaveChangesAsync();
+
+            var result = await _userImageRepository.GetUserImagesByUsernameAsync(username);
+
+            result.ShouldBeOfType<List<UserImageDto>>();
+            result.Count.ShouldBe(mockUserImages.Where(i => i.Username == username).ToList().Count);
+        }
+
+        [TestCase(null!)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public async Task GetUserImagesByUsernameAsync_GivenInvalidUsername_ShouldThrow_ArgumentException(string username)
+        {
+            await Should.ThrowAsync<ArgumentException>(async () => await _userImageRepository.GetUserImagesByUsernameAsync(username));
         }
     }
 }

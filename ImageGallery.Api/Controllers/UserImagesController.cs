@@ -1,4 +1,5 @@
-﻿using ImageGallery.Api.Interfaces.Repositories;
+﻿using Azure.Core;
+using ImageGallery.Api.Interfaces.Repositories;
 using ImageGallery.Api.Interfaces.Services;
 using ImageGallery.Api.Models.Dtos;
 using ImageGallery.Api.Models.Requests;
@@ -19,6 +20,29 @@ namespace ImageGallery.Api.Controllers
             _fileService = fileService;
             _logger = logger;
             _userImageRepository = userImageRepository;
+        }
+
+        [HttpGet("getuserimagesforuser/{username}")]
+        [ProducesResponseType(typeof(List<UserImageDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetUserImagesForUser(string username)
+        {
+            try
+            {
+                _logger.LogInformation("Getting user images for {}", username);
+
+                if (string.IsNullOrWhiteSpace(username))
+                    return BadRequest();
+
+                return Ok(await _userImageRepository.GetUserImagesByUsernameAsync(username));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Failed to get user images for {}: {}", username, ex.Message);
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         [HttpPost("createuserimage")]

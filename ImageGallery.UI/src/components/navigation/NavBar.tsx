@@ -23,8 +23,23 @@ export const NavBar = () => {
           <div className="collapse navbar-collapse" id="navbarColor03">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link" href="#">
+                <a className="nav-link" href="/">
                   Home
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Sign In
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">
+                  Sign Out
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="profile">
+                  <i className="bi bi-person"></i>
                 </a>
               </li>
             </ul>

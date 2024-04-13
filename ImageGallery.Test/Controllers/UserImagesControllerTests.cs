@@ -30,6 +30,7 @@ namespace ImageGallery.Test.Controllers
             _mockUserImageRepository.Setup(i => i.AddAsync(It.IsAny<UserImageDto>())).Returns(Task.FromResult(new UserImageDto()));
             _mockUserImageRepository.Setup(i => i.GetAllAsync()).Returns(Task.FromResult(new List<UserImageDto>()));
             _mockUserImageRepository.Setup(i => i.GetByIdAsync(It.IsAny<int>())).Returns(Task.FromResult(new UserImageDto()));
+            _mockUserImageRepository.Setup(i => i.GetUserImagesByUsernameAsync(It.IsAny<string>())).Returns(Task.FromResult(new List<UserImageDto>()));
 
             _mockFileService = new Mock<IFileService>();
             _mockFileService.Setup(f => f.UploadFileAsync(It.IsAny<string>(), It.IsAny<IFormFile>())).Returns(Task.FromResult("test"));
@@ -139,6 +140,43 @@ namespace ImageGallery.Test.Controllers
             var userImagesController = new UserImagesController(_mockFileService.Object, _mockLogger.Object, _mockUserImageRepository.Object);
 
             var actionResult = await userImagesController.GetSingleUserImage(1);
+            var result = actionResult as StatusCodeResult;
+
+            result.StatusCode.ShouldBe(StatusCodes.Status500InternalServerError);
+        }
+
+        [Test]
+        public async Task GetUserImagesForUser()
+        {
+            var userImagesController = new UserImagesController(_mockFileService.Object, _mockLogger.Object, _mockUserImageRepository.Object);
+
+            var actionResult = await userImagesController.GetUserImagesForUser("test@gmail.com");
+            var result = actionResult as OkObjectResult;
+
+            result.StatusCode.ShouldBe(StatusCodes.Status200OK);
+            result.Value.ShouldBeOfType<List<UserImageDto>>();
+        }
+
+        [TestCase(null!)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public async Task GetUserImagesForUser_GivenInvalidUsername_ShouldReturn_BadRequest(string username)
+        {
+            var userImagesController = new UserImagesController(_mockFileService.Object, _mockLogger.Object, _mockUserImageRepository.Object);
+
+            var actionResult = await userImagesController.GetUserImagesForUser(username);
+            var result = actionResult as BadRequestResult;
+
+            result.StatusCode.ShouldBe(StatusCodes.Status400BadRequest);
+        }
+
+        [Test]
+        public async Task GetUserImagesForUser_Failure_ShouldReturn_InternalServerError()
+        {
+            _mockUserImageRepository.Setup(i => i.GetUserImagesByUsernameAsync(It.IsAny<string>())).Throws(new Exception());
+            var userImagesController = new UserImagesController(_mockFileService.Object, _mockLogger.Object, _mockUserImageRepository.Object);
+
+            var actionResult = await userImagesController.GetUserImagesForUser("test@gmail.com");
             var result = actionResult as StatusCodeResult;
 
             result.StatusCode.ShouldBe(StatusCodes.Status500InternalServerError);

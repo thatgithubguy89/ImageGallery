@@ -5,5 +5,6 @@ namespace ImageGallery.Api.Interfaces.Repositories
 {
     public interface IUserImageRepository : IRepository<UserImage, UserImageDto>
     {
+        Task<List<UserImageDto>> GetUserImagesByUsernameAsync(string username);
     }
 }

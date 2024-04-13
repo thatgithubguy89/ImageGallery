@@ -33,5 +33,16 @@ namespace ImageGallery.Api.Repositories
 
             return Convert(userImage!);
         }
+
+        public async Task<List<UserImageDto>> GetUserImagesByUsernameAsync(string username)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(username);
+
+            var userImages = await _context.UserImages.Where(i => i.Username == username)
+                                                      .OrderByDescending(i => i.CreateTime)
+                                                      .ToListAsync();
+
+            return Convert(userImages);
+        }
     }
 }
