@@ -2,13 +2,19 @@ import { useEffect, useState } from "react";
 import { getUserImagesForUser } from "../services/UserImageService";
 import { UserImage } from "../models/UserImage";
 import { UserImageList } from "../components/userimages/UserImageList";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const ProfilePage = () => {
   const [userImages, setUserImages] = useState<UserImage[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getUserImagesForUser("test@gmail.com")
+    const username: string | any = localStorage.getItem("username");
+    if (!username) {
+      navigate("/");
+    }
+
+    getUserImagesForUser(username)
       .then((response) => setUserImages(response.data))
       .catch((error) => console.log(error));
   }, []);

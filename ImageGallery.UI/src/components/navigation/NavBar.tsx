@@ -1,4 +1,6 @@
 export const NavBar = () => {
+  const username = localStorage.getItem("username");
+
   return (
     <>
       <nav
@@ -27,21 +29,27 @@ export const NavBar = () => {
                   Home
                 </a>
               </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Sign In
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="#">
-                  Sign Out
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="nav-link" href="profile">
-                  <i className="bi bi-person"></i>
-                </a>
-              </li>
+              {!username && (
+                <li className="nav-item">
+                  <a className="nav-link" href="/signin">
+                    Sign In
+                  </a>
+                </li>
+              )}
+              {username && (
+                <li className="nav-item">
+                  <a className="nav-link" href="/">
+                    Sign Out
+                  </a>
+                </li>
+              )}
+              {username && (
+                <li className="nav-item">
+                  <a className="nav-link" href="profile">
+                    <i className="bi bi-person"></i>
+                  </a>
+                </li>
+              )}
             </ul>
             <form className="d-flex">
               <input
