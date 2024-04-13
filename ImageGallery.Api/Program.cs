@@ -3,6 +3,7 @@ using ImageGallery.Api.Extensions;
 using ImageGallery.Api.Models.Identity;
 using ImageGallery.Api.Profiles;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(p => p.AllowAnyOrig
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 builder.Services.AddHttpContextAccessor();
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
@@ -28,6 +30,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
+app.UseSerilogRequestLogging();
 app.MapIdentityApi<AppUser>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
