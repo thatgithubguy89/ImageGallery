@@ -17,6 +17,7 @@ builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.Re
 builder.Services.AddCors(options => options.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

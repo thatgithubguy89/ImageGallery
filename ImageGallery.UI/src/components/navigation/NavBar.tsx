@@ -1,6 +1,7 @@
-export const NavBar = () => {
-  const username = localStorage.getItem("username");
+import { SignInLinks } from "./SignInLinks";
+import { SignOutLinks } from "./SignOutLinks";
 
+export const NavBar = () => {
   return (
     <>
       <nav
@@ -29,27 +30,8 @@ export const NavBar = () => {
                   Home
                 </a>
               </li>
-              {!username && (
-                <li className="nav-item">
-                  <a className="nav-link" href="/signin">
-                    Sign In
-                  </a>
-                </li>
-              )}
-              {username && (
-                <li className="nav-item">
-                  <a className="nav-link" href="/">
-                    Sign Out
-                  </a>
-                </li>
-              )}
-              {username && (
-                <li className="nav-item">
-                  <a className="nav-link" href="profile">
-                    <i className="bi bi-person"></i>
-                  </a>
-                </li>
-              )}
+              <SignInLinks />
+              <SignOutLinks />
             </ul>
             <form className="d-flex">
               <input

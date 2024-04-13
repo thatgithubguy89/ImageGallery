@@ -12,8 +12,8 @@ import { RegisterPage } from "./pages/RegisterPage";
 function App() {
   return (
     <>
-      <NavBar />
       <BrowserRouter>
+        <NavBar />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/userimage/:id" element={<UserImagePage />} />

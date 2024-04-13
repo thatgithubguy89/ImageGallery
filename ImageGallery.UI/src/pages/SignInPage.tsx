@@ -20,6 +20,7 @@ export const SignInPage = () => {
         navigate("/");
         localStorage.setItem("username", email);
         localStorage.setItem("token", "Bearer " + response.data.accessToken);
+        window.location.reload();
       })
       .catch((error) => console.log(error));
   };

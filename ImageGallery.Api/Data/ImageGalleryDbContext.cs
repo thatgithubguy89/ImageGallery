@@ -9,8 +9,12 @@ namespace ImageGallery.Api.Data
 {
     public class ImageGalleryDbContext : IdentityDbContext<AppUser>
     {
-        public ImageGalleryDbContext(DbContextOptions<ImageGalleryDbContext> options) : base(options)
-        { }
+        private readonly IHttpContextAccessor _http;
+
+        public ImageGalleryDbContext(DbContextOptions<ImageGalleryDbContext> options, IHttpContextAccessor http) : base(options)
+        {
+            _http = http;
+        }
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
@@ -24,7 +28,7 @@ namespace ImageGallery.Api.Data
             foreach (var entity in entities)
             {
                 ((BaseModel)entity.Entity).LastEditTime = DateTime.Now;
-                ((BaseModel)entity.Entity).Username = "test@email.com";
+                ((BaseModel)entity.Entity).Username = _http.HttpContext.User.Identity.Name;//.Claims.ToList()[1].Value;
 
                 if (entity.State == EntityState.Added)
                 {

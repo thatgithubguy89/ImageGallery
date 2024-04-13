@@ -7,6 +7,9 @@ using ImageGallery.Api.Repositories;
 using Microsoft.EntityFrameworkCore;
 using ImageGallery.Api.Profiles;
 using Shouldly;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using System.Security.Principal;
 
 namespace ImageGallery.Test.Repositories
 {
@@ -17,6 +20,7 @@ namespace ImageGallery.Test.Repositories
         DbContextOptions<ImageGalleryDbContext> _contextOptions;
         IMapper _mapper;
         MapperConfiguration _mapperConfiguration;
+        IHttpContextAccessor _httpContextAccessor;
 
         static readonly List<Comment> mockComments = new List<Comment>
         {
@@ -35,11 +39,17 @@ namespace ImageGallery.Test.Repositories
         [SetUp]
         public void Setup()
         {
+            var identity = new GenericIdentity("test@gmail.com", "test");
+            var contextUser = new ClaimsPrincipal(identity);
+            var httpContext = new DefaultHttpContext();
+            httpContext.User = contextUser;
+            _httpContextAccessor = new HttpContextAccessor { HttpContext = httpContext };
+
             _contextOptions = new DbContextOptionsBuilder<ImageGalleryDbContext>()
                 .UseInMemoryDatabase("UserImageRepositoryTests")
                 .Options;
 
-            _context = new ImageGalleryDbContext(_contextOptions);
+            _context = new ImageGalleryDbContext(_contextOptions, _httpContextAccessor);
 
             _mapperConfiguration = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
             _mapper = new Mapper(_mapperConfiguration);

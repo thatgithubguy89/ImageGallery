@@ -32,7 +32,7 @@ export const UserImagePage = () => {
             <DislikeButton dislikesCount={userImage?.dislikesCount} />
             <small className="mb-1">
               Created By <Link to={"/"}>{userImage?.username}</Link> on{" "}
-              {userImage?.createTime.toString().substring(0, 10)}
+              {userImage?.createTime?.toString().substring(0, 10)}
             </small>
           </div>
         </div>
