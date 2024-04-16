@@ -4,6 +4,7 @@ import { UserImageList } from "../components/userimages/UserImageList";
 import { getAllUserImages } from "../services/UserImageService";
 import { QueryRequest } from "../models/QueryRequest";
 import { PagingList } from "../components/comments/PagingList";
+import { Loading } from "../components/common/Loading";
 
 export const HomePage = () => {
   const [userImages, setUserImages] = useState<UserImage[]>([]);
@@ -15,7 +16,7 @@ export const HomePage = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const handleGetUserImages = (currentPage: number) => {
-    const request: QueryRequest<UserImage> = {
+    const request: QueryRequest = {
       filter: {
         field: "title",
         value: searchPhrase,
@@ -41,7 +42,7 @@ export const HomePage = () => {
   }, []);
 
   if (isLoading) {
-    return <h4>Loading...</h4>;
+    return <Loading />;
   } else {
     return (
       <>

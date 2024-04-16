@@ -1,4 +1,4 @@
-export interface PageRequest<T> {
+export interface PageRequest {
   startingIndex: number;
   pageTotal: number;
 }

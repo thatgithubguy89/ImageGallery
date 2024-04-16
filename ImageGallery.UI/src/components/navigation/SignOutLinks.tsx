@@ -1,17 +1,13 @@
+import { resetSearchPhrase } from "../../services/UtilityService";
+
 export const SignOutLinks = () => {
   const username = localStorage.getItem("username");
-
-  const handleSearch = () => {
-    localStorage.setItem("search", "");
-
-    window.location.reload();
-  };
 
   return (
     <>
       {!username && (
         <li className="nav-item">
-          <a className="nav-link" href="/signin" onClick={handleSearch}>
+          <a className="nav-link" href="/signin" onClick={resetSearchPhrase}>
             Sign In
           </a>
         </li>

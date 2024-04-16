@@ -1,7 +1,7 @@
 import { FilterRequest } from "./FilterRequest";
 import { PageRequest } from "./PageRequest";
 
-export interface QueryRequest<T> {
+export interface QueryRequest {
   filter?: FilterRequest;
-  page?: PageRequest<T>;
+  page?: PageRequest;
 }

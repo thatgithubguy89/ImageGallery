@@ -1,14 +1,9 @@
 import { SearchForm } from "./SearchForm";
 import { SignInLinks } from "./SignInLinks";
 import { SignOutLinks } from "./SignOutLinks";
+import { resetSearchPhrase } from "../../services/UtilityService";
 
 export const NavBar = () => {
-  const handleSearch = () => {
-    localStorage.setItem("search", "");
-
-    window.location.reload();
-  };
-
   return (
     <>
       <nav
@@ -16,25 +11,11 @@ export const NavBar = () => {
         data-bs-theme="light"
       >
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            Image Gallery
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarColor03"
-            aria-controls="navbarColor03"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
           <div className="collapse navbar-collapse" id="navbarColor03">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/" onClick={handleSearch}>
-                  Home
+                <a className="nav-link" href="/" onClick={resetSearchPhrase}>
+                  Image Gallery
                 </a>
               </li>
               <SignInLinks />

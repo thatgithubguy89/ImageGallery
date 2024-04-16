@@ -1,12 +1,13 @@
-﻿using Azure.Core;
-using ImageGallery.Api.Interfaces.Repositories;
+﻿using ImageGallery.Api.Interfaces.Repositories;
 using ImageGallery.Api.Interfaces.Services;
 using ImageGallery.Api.Models.Dtos;
 using ImageGallery.Api.Models.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageGallery.Api.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class UserImagesController : ControllerBase
@@ -73,6 +74,7 @@ namespace ImageGallery.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("getalluserimages")]
         [ProducesResponseType(typeof(List<UserImageDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -96,6 +98,7 @@ namespace ImageGallery.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("getsingleuserimage/{id}")]
         [ProducesResponseType(typeof(UserImageDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

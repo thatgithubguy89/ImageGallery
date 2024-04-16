@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwagger();
 builder.Services.AddDbContext<ImageGalleryDbContext>(options => options.UseSqlServer(builder.Configuration["ImageGalleryConnectionString"]));
 builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<ImageGalleryDbContext>();
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -21,6 +21,8 @@ builder.Services.AddServices();
 builder.Services.AddHttpContextAccessor();
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 builder.Services.AddMemoryCache();
+builder.Services.AddAuthentication().AddBearerToken();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -34,6 +36,7 @@ app.UseStaticFiles();
 app.UseSerilogRequestLogging();
 app.MapIdentityApi<AppUser>();
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors();
 app.MapControllers();

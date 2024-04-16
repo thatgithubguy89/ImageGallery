@@ -1,10 +1,12 @@
 ﻿using ImageGallery.Api.Interfaces.Repositories;
 using ImageGallery.Api.Models;
 using ImageGallery.Api.Models.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageGallery.Api.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase

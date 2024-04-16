@@ -12,7 +12,7 @@ export const createUserImage = (data: object) => {
   });
 };
 
-export const getAllUserImages = (request: QueryRequest<object>) => {
+export const getAllUserImages = (request: QueryRequest) => {
   return axios.post(import.meta.env.VITE_GET_ALL_USERIMAGES_URL, request);
 };
 
@@ -22,6 +22,11 @@ export const getSingleUserImage = (id: String | undefined) => {
 
 export const getUserImagesForUser = (username: String) => {
   return axios.get(
-    `${import.meta.env.VITE_GET_USER_IMAGES_FOR_USER_URL}${username}`
+    `${import.meta.env.VITE_GET_USER_IMAGES_FOR_USER_URL}${username}`,
+    {
+      headers: {
+        Authorization: token,
+      },
+    }
   );
 };
