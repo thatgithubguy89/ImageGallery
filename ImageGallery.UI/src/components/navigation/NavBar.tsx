@@ -1,7 +1,14 @@
+import { SearchForm } from "./SearchForm";
 import { SignInLinks } from "./SignInLinks";
 import { SignOutLinks } from "./SignOutLinks";
 
 export const NavBar = () => {
+  const handleSearch = () => {
+    localStorage.setItem("search", "");
+
+    window.location.reload();
+  };
+
   return (
     <>
       <nav
@@ -26,23 +33,14 @@ export const NavBar = () => {
           <div className="collapse navbar-collapse" id="navbarColor03">
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
-                <a className="nav-link" href="/">
+                <a className="nav-link" href="/" onClick={handleSearch}>
                   Home
                 </a>
               </li>
               <SignInLinks />
               <SignOutLinks />
             </ul>
-            <form className="d-flex">
-              <input
-                className="form-control me-sm-2"
-                type="search"
-                placeholder="Search"
-              />
-              <button className="btn btn-secondary my-2 my-sm-0" type="submit">
-                Search
-              </button>
-            </form>
+            <SearchForm />
           </div>
         </div>
       </nav>

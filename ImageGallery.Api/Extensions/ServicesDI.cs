@@ -9,6 +9,7 @@ namespace ImageGallery.Api.Extensions
         {
             services.AddScoped(typeof(ICacheService<>), typeof(CacheService<>));
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped(typeof(IQueryService<>), typeof(QueryService<>));
 
             return services;
         }

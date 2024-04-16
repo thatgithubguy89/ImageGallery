@@ -1,4 +1,5 @@
 import axios from "axios";
+import { QueryRequest } from "../models/QueryRequest";
 
 const token = localStorage.getItem("token");
 
@@ -11,8 +12,8 @@ export const createUserImage = (data: object) => {
   });
 };
 
-export const getAllUserImages = () => {
-  return axios.get(import.meta.env.VITE_GET_ALL_USERIMAGES_URL);
+export const getAllUserImages = (request: QueryRequest<object>) => {
+  return axios.post(import.meta.env.VITE_GET_ALL_USERIMAGES_URL, request);
 };
 
 export const getSingleUserImage = (id: String | undefined) => {

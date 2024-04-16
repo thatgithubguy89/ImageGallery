@@ -6,6 +6,7 @@ export const SignInLinks = () => {
   const handleSignOut = () => {
     localStorage.setItem("username", "");
     localStorage.setItem("token", "");
+    localStorage.setItem("search", "");
 
     window.location.reload();
   };

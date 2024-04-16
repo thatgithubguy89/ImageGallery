@@ -14,12 +14,14 @@ namespace ImageGallery.Api.Controllers
         private readonly IFileService _fileService;
         private readonly ILogger<UserImagesController> _logger;
         private readonly IUserImageRepository _userImageRepository;
+        private readonly IQueryService<UserImageDto> _queryService;
 
-        public UserImagesController(IFileService fileService, ILogger<UserImagesController> logger, IUserImageRepository userImageRepository)
+        public UserImagesController(IFileService fileService, ILogger<UserImagesController> logger, IUserImageRepository userImageRepository, IQueryService<UserImageDto> queryService)
         {
             _fileService = fileService;
             _logger = logger;
             _userImageRepository = userImageRepository;
+            _queryService = queryService;
         }
 
         [HttpGet("getuserimagesforuser/{username}")]
@@ -71,16 +73,20 @@ namespace ImageGallery.Api.Controllers
             }
         }
 
-        [HttpGet("getalluserimages")]
+        [HttpPost("getalluserimages")]
         [ProducesResponseType(typeof(List<UserImageDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetAllUserImages()
+        public async Task<ActionResult> GetAllUserImages(QueryRequest request)
         {
             try
             {
                 _logger.LogInformation("Getting all user images");
 
-                return Ok(await _userImageRepository.GetAllAsync());
+                var userImages = await _userImageRepository.GetAllAsync();
+
+                var response = _queryService.RunQuery(request, userImages);
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
