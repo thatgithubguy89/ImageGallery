@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { getUserImagesForUser } from "../services/UserImageService";
+import { getUserImagesForUserPrivate } from "../services/UserImageService";
 import { UserImage } from "../models/UserImage";
 import { UserImageList } from "../components/userimages/UserImageList";
 import { Link, useNavigate } from "react-router-dom";
 import { Loading } from "../components/common/Loading";
 
-export const ProfilePage = () => {
+export const PrivateProfilePage = () => {
   const [userImages, setUserImages] = useState<UserImage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const ProfilePage = () => {
       navigate("/");
     }
 
-    getUserImagesForUser(username)
+    getUserImagesForUserPrivate(username)
       .then((response) => {
         setUserImages(response.data);
         setIsLoading(false);

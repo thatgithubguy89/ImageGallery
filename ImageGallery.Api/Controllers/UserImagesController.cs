@@ -33,7 +33,7 @@ namespace ImageGallery.Api.Controllers
         {
             try
             {
-                _logger.LogInformation("Getting user images for {}", username);
+                _logger.LogInformation($"Getting user images for {username}");
 
                 if (string.IsNullOrWhiteSpace(username))
                     return BadRequest();
@@ -42,7 +42,31 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to get user images for {}: {}", username, ex.Message);
+                _logger.LogError($"Failed to get user images for {username}: {ex.Message}");
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("getuserimagesforuserpublic/{username}")]
+        [ProducesResponseType(typeof(List<UserImageDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetUserImagesForUserPublic(string username)
+        {
+            try
+            {
+                _logger.LogInformation($"Getting user images for {username}");
+
+                if (string.IsNullOrWhiteSpace(username))
+                    return BadRequest();
+
+                return Ok(await _userImageRepository.GetUserImagesByUsernameAsync(username));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get user images for {username}: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -68,7 +92,7 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to create user image: {}", ex.Message);
+                _logger.LogError($"Failed to create user image: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -92,7 +116,7 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to get all user images: {}", ex.Message);
+                _logger.LogError($"Failed to get all user images: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -108,7 +132,7 @@ namespace ImageGallery.Api.Controllers
         {
             try
             {
-                _logger.LogInformation("Getting user image with the id of {}", id);
+                _logger.LogInformation($"Getting user image with the id of {id}");
 
                 if (id <= 0)
                     return BadRequest();
@@ -121,7 +145,7 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to get user image with the id of {}: {}", id, ex.Message);
+                _logger.LogError($"Failed to get user image with the id of {id}: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

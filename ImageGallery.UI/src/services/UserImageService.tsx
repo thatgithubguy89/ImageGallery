@@ -20,7 +20,7 @@ export const getSingleUserImage = (id: String | undefined) => {
   return axios.get(`${import.meta.env.VITE_GET_SINGLE_USERIMAGE_URL}${id}`);
 };
 
-export const getUserImagesForUser = (username: String) => {
+export const getUserImagesForUserPrivate = (username: String) => {
   return axios.get(
     `${import.meta.env.VITE_GET_USER_IMAGES_FOR_USER_URL}${username}`,
     {
@@ -28,5 +28,11 @@ export const getUserImagesForUser = (username: String) => {
         Authorization: token,
       },
     }
+  );
+};
+
+export const getUserImagesForUserPublic = (username: String) => {
+  return axios.get(
+    `${import.meta.env.VITE_GET_USER_IMAGES_FOR_USER_PUBLIC_URL}${username}`
   );
 };

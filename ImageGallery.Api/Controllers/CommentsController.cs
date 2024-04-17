@@ -39,7 +39,7 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to create comment: {}", ex.Message);
+                _logger.LogError($"Failed to create comment: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
@@ -54,7 +54,7 @@ namespace ImageGallery.Api.Controllers
         {
             try
             {
-                _logger.LogInformation("Getting comment with the id of {}", id);
+                _logger.LogInformation($"Getting comment with the id of {id}");
 
                 if (id <= 0)
                     return BadRequest();
@@ -67,7 +67,7 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to get comment with the id of {}: {}", id, ex.Message);
+                _logger.LogError($"Failed to get comment with the id of {id}: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

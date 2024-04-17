@@ -55,6 +55,9 @@ namespace ImageGallery.Api.Repositories
             var userImage = await _context.UserImages.Include(i => i.Comments!.OrderByDescending(c => c.CreateTime))
                                                      .FirstOrDefaultAsync(i => i.Id == id);
 
+            if (userImage == null)
+                return null!;
+
             _context.Entry(userImage).State = EntityState.Detached;
 
             return Convert(userImage!);

@@ -9,6 +9,7 @@ import { Loading } from "../components/common/Loading";
 
 export const UserImagePage = () => {
   const { id } = useParams();
+  const username = localStorage.getItem("username");
   const [userImage, setUserImage] = useState<UserImage>();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -45,8 +46,17 @@ export const UserImagePage = () => {
                 dislikesCount={userImage?.dislikesCount}
               />
               <small className="mb-1">
-                Created By <Link to={"/"}>{userImage?.username}</Link> on{" "}
-                {userImage?.createTime?.toString().substring(0, 10)}
+                Created By{" "}
+                <Link
+                  to={
+                    userImage?.username === username
+                      ? "/privateprofile"
+                      : `/publicprofile/${userImage?.username}`
+                  }
+                >
+                  {userImage?.username}
+                </Link>{" "}
+                on {userImage?.createTime?.toString().substring(0, 10)}
               </small>
             </div>
           </div>

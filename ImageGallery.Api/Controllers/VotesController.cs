@@ -38,7 +38,7 @@ namespace ImageGallery.Api.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError("Failed to create vote: {}", ex.Message);
+                _logger.LogError($"Failed to create vote: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

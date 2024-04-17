@@ -22,7 +22,7 @@ export const SignInLinks = () => {
       )}
       {username && (
         <li className="nav-item">
-          <a className="nav-link" href="profile">
+          <a className="nav-link" href="privateprofile">
             <i className="bi bi-person"></i>
           </a>
         </li>
