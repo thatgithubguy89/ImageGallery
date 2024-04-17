@@ -10,5 +10,6 @@ namespace ImageGallery.Api.Models.Dtos
         public int DislikesCount { get; set; }
         public int Views { get; set; }
         public ICollection<CommentDto>? Comments { get; set; }
+        public ICollection<VoteDto>? Votes { get; set; }
     }
 }

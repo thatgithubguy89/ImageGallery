@@ -5,11 +5,10 @@ using ImageGallery.Api.Models;
 using ImageGallery.Api.Models.Dtos;
 using ImageGallery.Api.Profiles;
 using ImageGallery.Api.Repositories;
+using ImageGallery.Test.Utitlity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
-using System.Security.Claims;
-using System.Security.Principal;
 
 namespace ImageGallery.Test.Repositories
 {
@@ -33,11 +32,7 @@ namespace ImageGallery.Test.Repositories
         [SetUp]
         public void Setup()
         {
-            var identity = new GenericIdentity("test@gmail.com", "test");
-            var contextUser = new ClaimsPrincipal(identity);
-            var httpContext = new DefaultHttpContext();
-            httpContext.User = contextUser;
-            _httpContextAccessor = new HttpContextAccessor { HttpContext = httpContext };
+            _httpContextAccessor = Generator.GenerateHttpContextAccessor();
 
             _contextOptions = new DbContextOptionsBuilder<ImageGalleryDbContext>()
                 .UseInMemoryDatabase("RepositoryTests")

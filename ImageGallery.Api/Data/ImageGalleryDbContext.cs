@@ -18,6 +18,7 @@ namespace ImageGallery.Api.Data
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserImage> UserImages { get; set; }
+        public DbSet<Vote> Votes { get; set; }
 
         // Set LastEditTime and Username whether entity is added or modified. Set CreateTime when entity is added.
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -28,7 +29,7 @@ namespace ImageGallery.Api.Data
             foreach (var entity in entities)
             {
                 ((BaseModel)entity.Entity).LastEditTime = DateTime.Now;
-                ((BaseModel)entity.Entity).Username = _http.HttpContext.User.Identity.Name;//.Claims.ToList()[1].Value;
+                ((BaseModel)entity.Entity).Username = _http.HttpContext.User.Identity.Name;
 
                 if (entity.State == EntityState.Added)
                 {
@@ -54,6 +55,12 @@ namespace ImageGallery.Api.Data
                    .HasMany(i => i.Comments)
                    .WithOne(c => c.UserImage)
                    .HasForeignKey(c => c.UserImageId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<UserImage>()
+                   .HasMany(i => i.Votes)
+                   .WithOne(v => v.UserImage)
+                   .HasForeignKey(v => v.UserImageId)
                    .OnDelete(DeleteBehavior.Cascade);
         }
     }

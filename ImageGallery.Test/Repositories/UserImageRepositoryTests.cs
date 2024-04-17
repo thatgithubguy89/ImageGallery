@@ -8,11 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using ImageGallery.Api.Profiles;
 using Shouldly;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using System.Security.Principal;
 using Moq;
 using ImageGallery.Api.Interfaces.Services;
 using Microsoft.Extensions.Caching.Memory;
+using ImageGallery.Test.Utitlity;
 
 namespace ImageGallery.Test.Repositories
 {
@@ -43,11 +42,7 @@ namespace ImageGallery.Test.Repositories
         [SetUp]
         public void Setup()
         {
-            var identity = new GenericIdentity("test@gmail.com", "test");
-            var contextUser = new ClaimsPrincipal(identity);
-            var httpContext = new DefaultHttpContext();
-            httpContext.User = contextUser;
-            _httpContextAccessor = new HttpContextAccessor { HttpContext = httpContext };
+            _httpContextAccessor = Generator.GenerateHttpContextAccessor();
 
             _contextOptions = new DbContextOptionsBuilder<ImageGalleryDbContext>()
                 .UseInMemoryDatabase("UserImageRepositoryTests")

@@ -30,14 +30,20 @@ export const UserImagePage = () => {
           <div className="card mb-3">
             <h6 className="card-header">{userImage?.title}</h6>
             <img
-              src="https://bootstrapious.com/i/snippets/sn-gallery/img-1.jpg"
+              src={`${import.meta.env.VITE_BASE_URL}${userImage?.imagePath}`}
               alt=""
               className="img-fluid card-img-top"
               style={{ width: "100%", height: "500px" }}
             />
             <div className="card-footer text-muted">
-              <LikeButton likesCount={userImage?.likesCount} />
-              <DislikeButton dislikesCount={userImage?.dislikesCount} />
+              <LikeButton
+                userImageId={userImage?.id}
+                likesCount={userImage?.likesCount}
+              />
+              <DislikeButton
+                userImageId={userImage?.id}
+                dislikesCount={userImage?.dislikesCount}
+              />
               <small className="mb-1">
                 Created By <Link to={"/"}>{userImage?.username}</Link> on{" "}
                 {userImage?.createTime?.toString().substring(0, 10)}

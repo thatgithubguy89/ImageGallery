@@ -10,6 +10,7 @@ namespace ImageGallery.Api.Profiles
         {
             CreateMap<Comment, CommentDto>().ReverseMap();
             CreateMap<UserImage, UserImageDto>().ReverseMap();
+            CreateMap<Vote, VoteDto>().ReverseMap();
         }
     }
 }

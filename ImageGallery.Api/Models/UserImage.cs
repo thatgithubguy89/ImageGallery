@@ -10,5 +10,6 @@ namespace ImageGallery.Api.Models
         public int DislikesCount { get; set; }
         public int Views { get; set; }
         public ICollection<Comment>? Comments { get; set; }
+        public ICollection<Vote>? Votes { get; set; }
     }
 }

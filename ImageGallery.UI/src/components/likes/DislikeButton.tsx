@@ -1,8 +1,24 @@
+import { createVote } from "../../services/VoteService";
+
 interface Props {
   dislikesCount: number | undefined;
+  userImageId?: number;
 }
 
-export const DislikeButton = ({ dislikesCount }: Props) => {
+export const DislikeButton = ({ dislikesCount, userImageId }: Props) => {
+  const handleCreateVote = (e: { preventDefault: () => void }): any => {
+    e.preventDefault();
+
+    const data = {
+      userImageId: userImageId,
+      dislike: true,
+    };
+
+    return createVote(data)
+      .then(() => window.location.reload())
+      .catch((error) => console.log(error));
+  };
+
   return (
     <>
       <svg
@@ -13,6 +29,7 @@ export const DislikeButton = ({ dislikesCount }: Props) => {
         className="bi bi-arrow-down-circle ms-2"
         viewBox="0 0 16 16"
         cursor={"pointer"}
+        onClick={handleCreateVote}
       >
         <path
           fillRule="evenodd"
