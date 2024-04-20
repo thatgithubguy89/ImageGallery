@@ -10,3 +10,9 @@ export const createcomment = (comment: Comment | undefined) => {
     },
   });
 };
+
+export const getCommentsForUser = (username: String) => {
+  return axios.get(
+    `${import.meta.env.VITE_GET_COMMENTS_FOR_USER_URL}${username}`
+  );
+};

@@ -12,13 +12,13 @@ namespace ImageGallery.Test.Controllers
 {
     public class CommentsControllerTests
     {
-        Mock<IRepository<Comment, CommentDto>> _mockCommentRepository;
+        Mock<ICommentRepository> _mockCommentRepository;
         Mock<ILogger<CommentsController>> _mockLogger;
 
         [SetUp]
         public void Setup()
         {
-            _mockCommentRepository = new Mock<IRepository<Comment, CommentDto>>();
+            _mockCommentRepository = new Mock<ICommentRepository>();
             _mockCommentRepository.Setup(c => c.AddAsync(It.IsAny<CommentDto>())).Returns(Task.FromResult(new CommentDto()));
             _mockCommentRepository.Setup(c => c.GetByIdAsync(It.IsAny<int>())).Returns(Task.FromResult(new CommentDto()));
 

@@ -7,6 +7,7 @@ namespace ImageGallery.Api.Extensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
             services.AddScoped<IUserImageRepository, UserImageRepository>();
             services.AddScoped<IVoteRepository, VoteRepository>();

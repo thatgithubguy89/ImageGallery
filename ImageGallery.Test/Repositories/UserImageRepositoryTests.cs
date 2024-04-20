@@ -87,6 +87,25 @@ namespace ImageGallery.Test.Repositories
         }
 
         [Test]
+        public async Task DeleteAsync()
+        {
+            await _context.UserImages.AddAsync(_mapper.Map<UserImage>(mockUserImage));
+            await _context.SaveChangesAsync();
+            _context.ChangeTracker.Clear();
+
+            await _userImageRepository.DeleteAsync(mockUserImage);
+            var result = await _userImageRepository.GetByIdAsync(mockUserImage.Id);
+
+            result.ShouldBeNull();
+        }
+
+        [Test]
+        public async Task DeleteAsync_GiveInvalidUserImage_ShouldThrow_ArgumentNullException()
+        {
+            await Should.ThrowAsync<ArgumentNullException>(async () => await _userImageRepository.DeleteAsync(null!));
+        }
+
+        [Test]
         public async Task GetAllAsync()
         {
             await _context.UserImages.AddRangeAsync(mockUserImages);

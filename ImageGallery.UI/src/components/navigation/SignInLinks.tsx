@@ -15,6 +15,13 @@ export const SignInLinks = () => {
     <>
       {username && (
         <li className="nav-item">
+          <Link to={"/createuserimage"} className="nav-link">
+            Create Image
+          </Link>
+        </li>
+      )}
+      {username && (
+        <li className="nav-item">
           <Link to={"/"} className="nav-link" onClick={handleSignOut}>
             Sign Out
           </Link>
@@ -22,7 +29,7 @@ export const SignInLinks = () => {
       )}
       {username && (
         <li className="nav-item">
-          <a className="nav-link" href="privateprofile">
+          <a className="nav-link" href={`/profile/${username}`}>
             <i className="bi bi-person"></i>
           </a>
         </li>

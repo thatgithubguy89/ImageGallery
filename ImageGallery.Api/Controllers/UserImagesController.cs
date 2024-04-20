@@ -25,35 +25,12 @@ namespace ImageGallery.Api.Controllers
             _queryService = queryService;
         }
 
+        [AllowAnonymous]
         [HttpGet("getuserimagesforuser/{username}")]
         [ProducesResponseType(typeof(List<UserImageDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> GetUserImagesForUser(string username)
-        {
-            try
-            {
-                _logger.LogInformation($"Getting user images for {username}");
-
-                if (string.IsNullOrWhiteSpace(username))
-                    return BadRequest();
-
-                return Ok(await _userImageRepository.GetUserImagesByUsernameAsync(username));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Failed to get user images for {username}: {ex.Message}");
-
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
-        [AllowAnonymous]
-        [HttpGet("getuserimagesforuserpublic/{username}")]
-        [ProducesResponseType(typeof(List<UserImageDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult> GetUserImagesForUserPublic(string username)
         {
             try
             {
@@ -146,6 +123,36 @@ namespace ImageGallery.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Failed to get user image with the id of {id}: {ex.Message}");
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpDelete("deleteuserimage/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> DeleteUserImage(int id)
+        {
+            try
+            {
+                _logger.LogInformation($"Deleting user image with the id of {id}");
+
+                if (id <= 0)
+                    return BadRequest();
+
+                var userImage = await _userImageRepository.GetByIdAsync(id);
+                if (userImage == null)
+                    return NotFound();
+
+                await _userImageRepository.DeleteAsync(userImage);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to delete user image with the id of {id}: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

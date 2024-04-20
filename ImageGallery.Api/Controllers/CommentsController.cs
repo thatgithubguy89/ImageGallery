@@ -12,9 +12,9 @@ namespace ImageGallery.Api.Controllers
     public class CommentsController : ControllerBase
     {
         private readonly ILogger<CommentsController> _logger;
-        private readonly IRepository<Comment, CommentDto> _commentRepository;
+        private readonly ICommentRepository _commentRepository;
 
-        public CommentsController(ILogger<CommentsController> logger, IRepository<Comment, CommentDto> commentRepository)
+        public CommentsController(ILogger<CommentsController> logger, ICommentRepository commentRepository)
         {
             _logger = logger;
             _commentRepository = commentRepository;
@@ -40,6 +40,33 @@ namespace ImageGallery.Api.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Failed to create comment: {ex.Message}");
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet("getcommentsforuser/{username}")]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetCommentsForUser(string username)
+        {
+            try
+            {
+                _logger.LogInformation($"Getting comments for user {username}");
+
+                if (string.IsNullOrWhiteSpace(username))
+                    return BadRequest();
+
+                var comments = await _commentRepository.GetCommentsByUsernameAsync(username);
+
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to get comments for user {username}: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

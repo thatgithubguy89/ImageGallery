@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserImage } from "../models/UserImage";
-import { getSingleUserImage } from "../services/UserImageService";
+import {
+  deleteUserImage,
+  getSingleUserImage,
+} from "../services/UserImageService";
 import { CommentList } from "../components/comments/CommentList";
 import { DislikeButton } from "../components/likes/DislikeButton";
 import { LikeButton } from "../components/likes/LikeButton";
@@ -9,9 +12,16 @@ import { Loading } from "../components/common/Loading";
 
 export const UserImagePage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const username = localStorage.getItem("username");
   const [userImage, setUserImage] = useState<UserImage>();
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleDeleteUserImage = () => {
+    return deleteUserImage(id)
+      .then(() => navigate("/"))
+      .catch((error) => console.log(error));
+  };
 
   useEffect(() => {
     getSingleUserImage(id)
@@ -47,17 +57,18 @@ export const UserImagePage = () => {
               />
               <small className="mb-1">
                 Created By{" "}
-                <Link
-                  to={
-                    userImage?.username === username
-                      ? "/privateprofile"
-                      : `/publicprofile/${userImage?.username}`
-                  }
-                >
+                <Link to={`/profile/${userImage?.username}`}>
                   {userImage?.username}
                 </Link>{" "}
                 on {userImage?.createTime?.toString().substring(0, 10)}
-              </small>
+              </small>{" "}
+              {username == userImage?.username && (
+                <i
+                  className="bi bi-trash"
+                  style={{ cursor: "pointer" }}
+                  onClick={handleDeleteUserImage}
+                ></i>
+              )}
             </div>
           </div>
         </div>
@@ -65,6 +76,7 @@ export const UserImagePage = () => {
         <CommentList
           comments={userImage?.comments}
           userImageId={userImage?.id}
+          canAddComment={true}
         />
       </>
     );

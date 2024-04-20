@@ -34,6 +34,14 @@ namespace ImageGallery.Api.Repositories
             return Convert(newUserImage.Entity);
         }
 
+        public override async Task DeleteAsync(UserImageDto userImage)
+        {
+            await base.DeleteAsync(userImage);
+
+            _cacheService.DeleteItems("alluserimages");
+            _cacheService.DeleteItems($"{userImage.Username}-userimages");
+        }
+
         public override async Task<List<UserImageDto>> GetAllAsync()
         {
             var userImages = _cacheService.GetItems("alluserimages");

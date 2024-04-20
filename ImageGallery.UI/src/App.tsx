@@ -5,10 +5,9 @@ import { NavBar } from "./components/navigation/NavBar";
 import { UserImagePage } from "./pages/UserImageDetailsPage";
 import { CreateCommentPage } from "./pages/CreateCommentPage";
 import { CreateUserImagePage } from "./pages/CreateUserImagePage";
-import { PrivateProfilePage } from "./pages/PrivateProfilePage";
 import { SignInPage } from "./pages/SignInPage";
 import { RegisterPage } from "./pages/RegisterPage";
-import { PublicProfilePage } from "./pages/PublicProfilePage";
+import { ProfilePage } from "./pages/ProfilePage";
 
 function App() {
   return (
@@ -23,11 +22,7 @@ function App() {
             element={<CreateCommentPage />}
           />
           <Route path="/createuserimage" element={<CreateUserImagePage />} />
-          <Route path="/privateprofile" element={<PrivateProfilePage />} />
-          <Route
-            path="/publicprofile/:username"
-            element={<PublicProfilePage />}
-          />
+          <Route path="/profile/:username" element={<ProfilePage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<HomePage />} />

@@ -5,15 +5,18 @@ import { IndividualComment } from "./IndividualComment";
 interface Props {
   comments: Comment[] | undefined;
   userImageId: number | undefined;
+  canAddComment: boolean;
 }
 
-export const CommentList = ({ comments, userImageId }: Props) => {
-  const username = localStorage.getItem("username");
-
+export const CommentList = ({
+  comments,
+  userImageId,
+  canAddComment,
+}: Props) => {
   return (
     <>
       <div className="container w-50 mt-3 mb-3">
-        {username && (
+        {canAddComment && (
           <Link
             className="btn btn-primary mb-3"
             to={`/createcomment/${userImageId}`}
